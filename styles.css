@@ -1,0 +1,109 @@
+* {background-color: #BBBBBB}
+
+.color-game {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.default-colors {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0px;
+  align-items: flex-end;
+}
+
+.color-picker {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.color-picker,
+.difficulty-selector {
+  border: 2px solid #ccc; 
+  border-radius: 10px; 
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+	margin-top: 5px;
+	margin-bottom: 20px; 
+  padding: 10px;
+}
+
+.difficulty-selector {
+	margin-bottom: 0px;
+}
+
+.parent-container {
+  display: inline-block;
+  text-align: center; 
+}
+
+.color {
+  width: 120px;
+  height: 120px;
+  border: 0px solid #ccc;
+  border-radius: 50%;
+  margin: 10px;
+  cursor: pointer;
+  position: relative;
+}
+
+.color span {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #ccc;
+  padding: 2px 5px;
+  border-radius: 5px;
+	visibility: hidden;
+}
+
+.colors-display {
+  display: flex;
+  justify-content: space-between;
+}
+
+.target-color, .result {
+	text-align: left; 
+  width: 345px;
+  height: 345px;
+  border: 0px solid #ccc;
+  display: inline-block;
+  background-color: #FFFFFF;
+  margin: 0px 0;
+}
+
+#difficulty-selector {
+  font-size: 24px;
+  padding: 10px;
+	
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+#nColSelect {
+  width: 200px; /* set a fixed width */
+  height: 40px; /* set a fixed height */
+}
+#reset-button {
+  width: 60px;
+  height: 180px;
+}
+
+#next-button {
+  width: 60px;
+  height: 180px;
+}
+
+/* to prevent text selection on page elements when you click fast enough on colors */
+body {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}

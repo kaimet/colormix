@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Color Mixing</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <!--<center><h1>Color Mixing</h1></center>-->
+<center>
+
+<div class="parent-container">
+	<div class="color-picker">
+		 <div class="colors-display">
+				<div class="target-color" id="target-color"></div>
+				<div class="result" id="result">
+			<span id="difference-result" style="font-size: 24px;"></span>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="color-picker">
+		<button id="reset-button">Reset</button>
+		<div class="default-colors">
+			
+		</div>
+		<button id="next-button">&nbsp Next &nbsp</button>
+	</div>
+
+
+
+	<div class="difficulty-selector">
+		<label for="nCol-select" style="font-size: 20px;">Number of colors:</label>
+		<select id="nCol-select" style="font-size: 20px;">
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+		</select>
+	</div>
+	
+</div>
+
+</center>
+
+<script src="colmix.js"></script>
+
+</body>
+
+</html>
