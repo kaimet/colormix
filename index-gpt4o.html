@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Color Mixing Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .color-display {
+            display: flex;
+            width: 400px;
+            height: 200px;
+        }
+
+        .color-square {
+            flex: 1;
+        }
+
+        .target-color {
+            border-right: none;
+        }
+
+        .mixed-color {
+            border-left: none;
+        }
+
+        .color-palette {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        .color-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: height 0.2s;
+        }
+
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .controls select {
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="color-display">
+        <div class="color-square target-color"></div>
+        <div class="color-square mixed-color"></div>
+    </div>
+    <div class="color-palette"></div>
+    <div class="controls">
+        <label for="colorCount">Number of Colors:</label>
+        <select id="colorCount">
+            <option value="3">3</option>
+            <option value="4" selected>4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+        </select>
+        <button onclick="resetGame()">Reset Game</button>
+    </div>
+
+    <script>
+        const targetColorSquare = document.querySelector('.target-color');
+        const mixedColorSquare = document.querySelector('.mixed-color');
+        const colorPalette = document.querySelector('.color-palette');
+        const colorCountSelect = document.getElementById('colorCount');
+
+        let defaultColors = [];
+        let targetColor = [0, 0, 0];
+        let mixedColors = [];
+        let colorCounts = [];
+
+        function generateRandomColor() {
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            return [r, g, b];
+        }
+
+        function generateDefaultColors(count) {
+            const colors = [];
+            while (colors.length < count) {
+                const color = generateRandomColor();
+                if (!colors.some(c => c.toString() === color.toString())) {
+                    colors.push(color);
+                }
+            }
+            return colors;
+        }
+
+        function setColorSquare(element, color) {
+            element.style.backgroundColor = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+        }
+
+        function mixColors(colors, counts) {
+            let total = [0, 0, 0];
+            let count = 0;
+            for (let i = 0; i < colors.length; i++) {
+                for (let j = 0; j < counts[i]; j++) {
+                    total[0] += colors[i][0];
+                    total[1] += colors[i][1];
+                    total[2] += colors[i][2];
+                    count++;
+                }
+            }
+            if (count === 0) return [0, 0, 0];
+            return total.map(c => Math.round(c / count));
+        }
+
+        function updateMixedColor() {
+            const color = mixColors(defaultColors, colorCounts);
+            setColorSquare(mixedColorSquare, color);
+        }
+
+        function initializeGame() {
+            const colorCount = parseInt(colorCountSelect.value);
+            defaultColors = generateDefaultColors(colorCount);
+            colorCounts = new Array(colorCount).fill(0);
+            mixedColors = [];
+
+            colorPalette.innerHTML = '';
+            defaultColors.forEach((color, index) => {
+                const colorCircle = document.createElement('div');
+                colorCircle.className = 'color-circle';
+                setColorSquare(colorCircle, color);
+                colorPalette.appendChild(colorCircle);
+
+                colorCircle.addEventListener('click', () => {
+                    if (colorCounts[index] < 3) {
+                        colorCounts[index]++;
+                        colorCircle.style.height = `${50 + 20 * colorCounts[index]}px`;
+                        updateMixedColor();
+                    }
+                });
+
+                colorCircle.addEventListener('contextmenu', (event) => {
+                    event.preventDefault();
+                    if (colorCounts[index] > 0) {
+                        colorCounts[index]--;
+                        colorCircle.style.height = `${50 + 20 * colorCounts[index]}px`;
+                        updateMixedColor();
+                    }
+                });
+            });
+
+            setTargetColor();
+        }
+
+        function setTargetColor() {
+            const mixIndices = [];
+            while (mixIndices.length < 3) {
+                const index = Math.floor(Math.random() * defaultColors.length);
+                if (!mixIndices.includes(index)) {
+                    mixIndices.push(index);
+                }
+            }
+
+            const counts = mixIndices.map(() => Math.floor(Math.random() * 3) + 1);
+            targetColor = mixColors(mixIndices.map(i => defaultColors[i]), counts);
+            setColorSquare(targetColorSquare, targetColor);
+        }
+
+        function resetGame() {
+            initializeGame();
+            updateMixedColor();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            resetGame();
+        });
+
+        colorCountSelect.addEventListener('change', resetGame);
+    </script>
+</body>
+</html>
