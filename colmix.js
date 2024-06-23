@@ -151,6 +151,12 @@ function setupEventListeners() {
         subcolor.updateHeight();
         updateResultColor();
       }
+			if (deltaY < -25) { // upward swipe
+        subcolor.count = 2;
+        subcolor.element.querySelector("span").textContent = subcolor.count;
+        subcolor.updateHeight();
+        updateResultColor();
+      }
     });
 
     subcolor.element.addEventListener('contextmenu', (e) => {
