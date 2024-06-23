@@ -150,8 +150,6 @@ function setupEventListeners() {
         subcolor.element.querySelector("span").textContent = subcolor.count;
         subcolor.updateHeight();
         updateResultColor();
-      } else {
-        handleMouseInteraction(e, subcolor);
       }
     });
 
