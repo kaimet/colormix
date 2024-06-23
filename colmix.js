@@ -127,28 +127,53 @@ function showDifference() {
 
 function setupEventListeners() {
   subcolors.forEach((subcolor) => {
-		subcolor.element.addEventListener("mousedown", (e) => {
-			const countElement = subcolor.element.querySelector("span");
-			if (e.button === 0) {
-				subcolor.count++;
-				if (subcolor.count > 2) subcolor.count = 2;
-				countElement.textContent = subcolor.count;
-			} else if (e.button === 2) {
-				subcolor.count--;
-				if (subcolor.count < 0) subcolor.count = 0;
-				countElement.textContent = subcolor.count;
-			}
-			subcolor.updateHeight();
-			updateResultColor();
-		});
-	});
+    let touchStartY;
+    
+    subcolor.element.addEventListener("mousedown", (e) => {
+      handleMouseInteraction(e, subcolor);
+    });
 
-	subcolors.forEach((subcolor) => {
-		subcolor.element.addEventListener('contextmenu', (e) => {
-			e.preventDefault();
-			return false;
-		});
-	});
+    subcolor.element.addEventListener('touchstart', (e) => {
+      touchStartY = e.touches[0].clientY;
+    });
+
+    subcolor.element.addEventListener('touchmove', (e) => {
+      e.preventDefault(); // Prevent scrolling
+    });
+
+    subcolor.element.addEventListener('touchend', (e) => {
+      const touchEndY = e.changedTouches[0].clientY;
+      const deltaY = touchEndY - touchStartY;
+
+      if (deltaY > 25) { // Threshold for downward swipe
+        subcolor.count = 0;
+        subcolor.element.querySelector("span").textContent = subcolor.count;
+        subcolor.updateHeight();
+        updateResultColor();
+      } else {
+        handleMouseInteraction(e, subcolor);
+      }
+    });
+
+    subcolor.element.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      return false;
+    });
+  });
+}
+
+function handleMouseInteraction(e, subcolor) {
+  const countElement = subcolor.element.querySelector("span");
+  if (e.button === 0 || e.type === 'touchend') {
+    subcolor.count++;
+    if (subcolor.count > 2) subcolor.count = 2;
+  } else if (e.button === 2) {
+    subcolor.count--;
+    if (subcolor.count < 0) subcolor.count = 0;
+  }
+  countElement.textContent = subcolor.count;
+  subcolor.updateHeight();
+  updateResultColor();
 }
 
 
